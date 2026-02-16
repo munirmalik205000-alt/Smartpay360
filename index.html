@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spay360 Login</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- LOGIN -->
+<div id="loginBox" class="card">
+<h2>Welcome To Spay360</h2>
+<input type="email" id="loginEmail" placeholder="Email">
+<div class="password-box">
+  <input type="password" id="loginPassword" placeholder="Password">
+  <span onclick="togglePassword('loginPassword', this)">👁</span>
+</div>
+ <ahref="dashboard.html">
+<button onclick="login()">Login</button>
+<p>Don't have account? <span onclick="showSignup()">Signup</span></p>
+</div>
+
+<!-- SIGNUP -->
+<div id="signupBox" class="card" style="display:none;">
+<h2>Create Account</h2>
+
+<input type="text" id="referralCode"
+placeholder="Enter Referral ID"
+oninput="this.value=this.value.toUpperCase()">
+
+<p id="refName"></p>
+
+<input type="text" id="fullName" placeholder="Full Name">
+<input type="tel" id="mobile" placeholder="Mobile Number">
+
+<select id="state">
+<option value="">Select State</option>
+<option>Andhra Pradesh</option>
+<option>Arunachal Pradesh</option>
+<option>Assam</option>
+<option>Bihar</option>
+<option>Chhattisgarh</option>
+<option>Goa</option>
+<option>Gujarat</option>
+<option>Haryana</option>
+<option>Himachal Pradesh</option>
+<option>Jharkhand</option>
+<option>Karnataka</option>
+<option>Kerala</option>
+<option>Madhya Pradesh</option>
+<option>Maharashtra</option>
+<option>Manipur</option>
+<option>Meghalaya</option>
+<option>Mizoram</option>
+<option>Nagaland</option>
+<option>Odisha</option>
+<option>Punjab</option>
+<option>Rajasthan</option>
+<option>Sikkim</option>
+<option>Tamil Nadu</option>
+<option>Telangana</option>
+<option>Tripura</option>
+<option>Uttar Pradesh</option>
+<option>Uttarakhand</option>
+<option>West Bengal</option>
+</select>
+
+<input type="email" id="signupEmail" placeholder="Email">
+<div class="password-box">
+  <input type="password" id="signupPassword" placeholder="Password">
+  <span onclick="togglePassword('signupPassword', this)">👁</span>
+</div>
+
+<div class="password-box">
+  <input type="password" id="confirmPassword" placeholder="Confirm Password">
+  <span onclick="togglePassword('confirmPassword', this)">👁</span>
+</div>
+
+<button onclick="signup()">Create Account</button>
+<p>Already have account? <span onclick="showLogin()">Login</span></p>
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } 
+from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, collection, query, where, getDocs } 
+from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCBBANSZWmXo4nHV2DYqy0VNhpxmDCRqzA",
+  authDomain: "spay360-bbb00.firebaseapp.com",
+  projectId: "spay360-bbb00",
+  storageBucket: "spay360-bbb00.firebasestorage.app",
+  messagingSenderId: "39260952363",
+  appId: "1:39260952363:web:21d6f2a619b51b3f5a576e"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// 🔹 SHOW SIGNUP
+window.showSignup = function(){
+  document.getElementById("loginBox").style.display="none";
+  document.getElementById("signupBox").style.display="block";
+}
+
+// 🔹 SHOW LOGIN
+window.showLogin = function(){
+  document.getElementById("signupBox").style.display="none";
+  document.getElementById("loginBox").style.display="block";
+}
+
+// 🔹 Unique Referral Generator
+function generateReferralCode() {
+  return "REF" + Math.floor(100000 + Math.random() * 900000);
+}
+
+// 🔹 VERIFY REFERRAL
+document.getElementById("referralCode").addEventListener("blur", async () => {
+
+  const code = document.getElementById("referralCode").value.trim();
+  const refName = document.getElementById("refName");
+
+  if (!code) return;
+
+  const q = query(collection(db,"users"), where("referralCode","==",code));
+  const snapshot = await getDocs(q);
+
+  if (!snapshot.empty) {
+    const data = snapshot.docs[0].data();
+    refName.innerHTML = "Referred By: " + data.fullName;
+    refName.style.color="green";
+  } else {
+    refName.innerHTML = "Invalid Referral Code";
+    refName.style.color="red";
+  }
+});
+
+// 🔹 SIGNUP
+window.signup = async function(){
+
+  const referral = document.getElementById("referralCode").value.trim();
+  const fullName = document.getElementById("fullName").value.trim();
+  const mobile = document.getElementById("mobile").value.trim();
+  const state = document.getElementById("state").value;
+  const email = document.getElementById("signupEmail").value.trim();
+  const password = document.getElementById("signupPassword").value;
+  const confirmPassword = document.getElementById("confirmPassword").value;
+
+  if(!referral || !fullName || !mobile || !state || !email || !password){
+    alert("All fields required!");
+    return;
+  }
+
+  if(password !== confirmPassword){
+    alert("Password not match!");
+    return;
+  }
+
+  const q = query(collection(db,"users"), where("referralCode","==",referral));
+  const snapshot = await getDocs(q);
+
+  if(snapshot.empty){
+    alert("Invalid Referral Code!");
+    return;
+  }
+
+  try{
+
+    const userCredential = await createUserWithEmailAndPassword(auth,email,password);
+    const user = userCredential.user;
+
+    const newReferral = generateReferralCode();
+
+    await setDoc(doc(db,"users",user.uid),{
+      fullName:fullName,
+      mobile:mobile,
+      state:state,
+      password: password,
+      email:email,
+      referralCode:newReferral,
+      referredBy:referral,
+      wallet:0,
+      createdAt:new Date()
+    });
+
+    alert("Account Created Successfully!");
+    window.location.reload();
+
+  }catch(error){
+    alert(error.message);
+  }
+}
+
+// 🔹 LOGIN
+window.login = async function(){
+
+  const email=document.getElementById("loginEmail").value;
+  const password=document.getElementById("loginPassword").value;
+
+  try{
+    await signInWithEmailAndPassword(auth,email,password);
+    alert("Login Successful");
+    window.location.href="dashboard.html";
+  }catch(error){
+    alert(error.message);
+  }
+}
+
+</script>
+
+</body>
+</html>
+<script src="script.js"></script>
+</body>
+</html>
