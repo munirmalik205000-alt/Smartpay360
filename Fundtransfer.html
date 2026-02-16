@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+    <button onclick="window.location.href='Dashboard.html'" 
+style="margin:10px; padding:10px 15px;">
+⬅ Back
+</button>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<h2 style="color: yellow; text-align: center;">
+USER TO USER
+</h2>
+
+<title> Fund Transfer</title>
+
+<style>
+body{
+    font-family: Arial;
+    background: linear-gradient(135deg,#203a43,#203a43,#203a43);
+    margin:0;
+}
+.container{
+    width:95%;
+    max-width:450px;
+    margin:50px auto;
+    background:#fff;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+h2{
+    text-align:center;
+}
+input{
+    width:85%;
+    padding:10px;
+    margin:10px 0;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+button{
+    width:30%;
+    padding:10px;
+    background:#2c5364;
+    color:#fff;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+button:hover{
+    background:#203a43;
+}
+.info{
+    background:#f1f1f1;
+    padding:10px;
+    border-radius:5px;
+    margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Fund Transfer</h2>
+
+    <!-- Receiver Refer ID -->
+    <input type="text" id="receiverRefer" placeholder="Enter Receiver Refer ID">
+    
+<button onclick="verifyRefer()">Verify</button>
+
+<span id="referName"></span>
+
+    <div class="info">
+        Receiver Name: <span id="receiverName">---</span>
+    </div>
+
+    <input type="number" id="amount" placeholder="Enter Amount">
+
+    <button onclick="transferMoney()">Transfer</button>
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+import { getDatabase, ref, get, update, query, orderByChild, equalTo }
+from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCBBANSZWmXo4nHV2DYqy0VNhpxmDCRqzA",
+  authDomain: "spay360-bbb00.firebaseapp.com",
+  databaseURL: "https://spay360-bbb00-default-rtdb.firebaseio.com/",
+  projectId: "spay360-bbb00",
+  storageBucket: "spay360-bbb00.firebasestorage.app",
+  messagingSenderId: "39260952363",
+  appId: "1:39260952363:web:21d6f2a619b51b3f5a576e"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// 🔥 YAHAN LOGIN USER KA UID DALO
+let currentUserUID = "PUT_CURRENT_USER_UID_HERE";
+let currentUserData = null;
+let receiverUID = "";
+let receiverData = null;
+
+// 🔹 Load Current User
+async function loadCurrentUser(){
+    const snap = await get(ref(db,"users/"+currentUserUID));
+    if(snap.exists()){
+        currentUserData = snap.val();
+    }
+}
+loadCurrentUser();
+
+// 🔥 Receiver Auto Fetch + Auto CAPITAL
+document.getElementById("receiverRefer").addEventListener("input", async function(){
+
+    this.value = this.value.toUpperCase();
+    let referId = this.value.trim();
+    if(referId === "") return;
+
+    const q = query(ref(db,"users"), orderByChild("referId"), equalTo(referId));
+    const snapshot = await get(q);
+
+    if(snapshot.exists()){
+        snapshot.forEach(child=>{
+            receiverUID = child.key;
+            receiverData = child.val();
+        });
+        document.getElementById("receiverName").innerText = receiverData.name;
+    }else{
+        receiverUID = "";
+        receiverData = null;
+        document.getElementById("receiverName").innerText = "---";
+    }
+});
+
+// 🔥 Transfer
+window.transferMoney = async function(){
+
+    let amount = parseInt(document.getElementById("amount").value);
+
+    if(!receiverData){
+        alert("Invalid Receiver ID");
+        return;
+    }
+
+    if(!amount || amount <= 0){
+        alert("Enter Valid Amount");
+        return;
+    }
+
+    if(amount > currentUserData.wallet){
+        alert("Insufficient Balance");
+        return;
+    }
+
+    let updates = {};
+    updates['users/'+currentUserUID+'/wallet'] = currentUserData.wallet - amount;
+    updates['users/'+receiverUID+'/wallet'] = receiverData.wallet + amount;
+
+    await update(ref(db), updates);
+
+    alert("Transfer Successful");
+
+    currentUserData.wallet -= amount;
+}
+
+</script>
+
+</body>
+</html>
