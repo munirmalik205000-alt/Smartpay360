@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mobile Recharge & Utility Bills</title>
+    <link rel="stylesheet" href="recharge.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<div class="header">
+    <h2>Recharge & Bill Payments</h2>
+</div>
+
+<div class="container">
+
+    <!-- SERVICE TABS -->
+    <div class="tabs">
+        <button class="tab active" onclick="showTab('mobile')">Mobile Recharge</button>
+        <button class="tab" onclick="showTab('utility')">Utility Bills</button>
+    </div>
+
+    <!-- MOBILE RECHARGE -->
+    <div id="mobile" class="tab-content active">
+        <h3>Mobile Recharge</h3>
+
+        <select>
+            <option>Select Operator</option>
+            <option>Jio</option>
+            <option>Airtel</option>
+            <option>Vi</option>
+            <option>BSNL</option>
+        </select>
+
+        <input type="text" placeholder="Enter Mobile Number" maxlength="10">
+        <input type="number" placeholder="Enter Amount">
+
+        <button class="main-btn">Proceed Recharge</button>
+    </div>
+
+    <!-- UTILITY BILLS -->
+    <div id="utility" class="tab-content">
+        <h3>Bill Payments</h3>
+
+        <select>
+            <option>Select Bill Type</option>
+            <option>Electricity Bill</option>
+            <option>Water Bill</option>
+            <option>Gas Bill</option>
+            <option>DTH Recharge</option>
+            <option>Broadband</option>
+        </select>
+
+        <input type="text" placeholder="Enter Consumer Number">
+        <input type="number" placeholder="Enter Amount">
+
+        <button class="main-btn">Pay Bill</button>
+    </div>
+
+</div>
+
+<script>
+function showTab(tabId) {
+    document.querySelectorAll(".tab").forEach(btn => btn.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
+
+    document.getElementById(tabId).classList.add("active");
+    event.target.classList.add("active");
+}
+</script>
+
+</body>
+</html>
