@@ -1,0 +1,87 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #e6d5bd;
+}
+
+.container {
+    padding: 15px;
+}
+
+/* Heading */
+.title {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    text-align: center;
+    margin-bottom: 18px;
+    color: #444;
+}
+
+/* Summary Boxes */
+.summary-section {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.summary-box {
+    flex: 1;
+    background: linear-gradient(135deg, #2a5bd7, #4f7cff);
+    color: white;
+    text-align: center;
+    padding: 18px 10px;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+.summary-box p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.summary-box h2 {
+    margin-top: 8px;
+    font-size: 22px;
+}
+
+/* Table */
+.table-box {
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    table-layout: fixed;
+}
+
+th {
+    background: linear-gradient(45deg, #8e2de2, #b06df3);
+    color: white;
+    padding: 10px 4px;
+}
+
+td {
+    text-align: center;
+    padding: 10px 4px;
+    word-wrap: break-word;
+}
+
+tr:nth-child(even) {
+    background: #f3f3f3;
+}
+
+/* Grand Total Row */
+.grand-total {
+    background: #222;
+    color: white;
+    font-size: 13px;
+}
