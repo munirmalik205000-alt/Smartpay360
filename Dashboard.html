@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spay360 Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+<!-- Top Header -->
+<div class="top-header">
+    <h2>Welcome To Spay360</h2>
+    <h3 id="userName">Loading...</h3>
+</div>
+
+<!-- Main Card -->
+<div class="main-card">
+
+    <!-- Refer Section -->
+    <div class="refer-card">
+        <h3>Your Refer Link</h3>
+        <input type="text" id="referLink" readonly>
+        <button class="copy-btn" onclick="copyLink()">Copy Link</button>
+    </div>
+
+    <!-- Wallet Section -->
+    <div class="wallet-section">
+        <h3>Wallet Balance</h3>
+        <h1>₹ <span id="walletAmount">0</span></h1>
+        <button class="add-btn">Add Money</button>
+    </div>
+
+    <!-- Services -->
+    <div class="service-grid">
+
+        <a href="Recharge.html" class="service-box">
+            <div class="icon">📱</div>
+            <p>Recharge & Bills Payment</p>
+        </a>
+
+        <div class="service-box">
+            <div class="icon">🧾</div>
+            <p>Wallet Transfer</p>
+        </div>
+
+        <a href="myteam.html" class="service-box">
+            <div class="icon">👥</div>
+            <p>My Team</p>
+        </a>
+
+        <div class="service-box">
+            <div class="icon">📋</div>
+            <p>Transaction</p>
+        </div>
+
+    </div>
+
+    <br>
+    <button onclick="logout()">Logout</button>
+
+</div>
+
+
+<!-- 🔥 FIREBASE CONNECTION -->
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } 
+from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+import { getFirestore, doc, getDoc } 
+from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCBBANSZWmXo4nHV2DYqy0VNhpxmDCRqzA",
+  authDomain: "spay360-bbb00.firebaseapp.com",
+  projectId: "spay360-bbb00",
+  storageBucket: "spay360-bbb00.firebasestorage.app",
+  messagingSenderId: "39260952363",
+  appId: "1:39260952363:web:21d6f2a619b51b3f5a576e",
+  measurementId: "G-XS5RVGQ2YS"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// 🔐 Login Check
+onAuthStateChanged(auth, async (user) => {
+
+  if (user) {
+
+    const docRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+
+      const data = docSnap.data();
+
+      // 👤 Name Show
+      document.getElementById("userName").innerHTML = data.fullName;
+
+      // 💰 Wallet Show
+      document.getElementById("walletAmount").innerHTML = data.wallet;
+
+      // 🔗 Referral Link Generate
+      const referURL = window.location.origin + 
+        "/index.html?ref=" + data.referralCode;
+
+      document.getElementById("referLink").value = referURL;
+    }
+
+  } else {
+    // ❌ Not logged in
+    window.location.href = "index.html";
+  }
+
+});
+
+// 🔓 Logout
+window.logout = function(){
+  signOut(auth).then(()=>{
+    window.location.href="index.html";
+  });
+}
+
+// 📋 Copy Link
+window.copyLink = function(){
+  const copyText = document.getElementById("referLink");
+  copyText.select();
+  copyText.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  alert("Referral Link Copied!");
+}
+
+</script>
+
+</body>
+</html>
