@@ -2,6 +2,92 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+}
+
+/* Navbar */
+.navbar{
+    background:#0d6efd;
+    color:white;
+    padding:15px;
+    font-size:20px;
+    display:flex;
+    align-items:center;
+}
+
+/* Menu Button */
+.menu-btn{
+    font-size:25px;
+    cursor:pointer;
+    margin-right:15px;
+}
+
+/* Sidebar */
+.sidebar{
+    height:100%;
+    width:0;
+    position:fixed;
+    top:0;
+    left:0;
+    background:#111;
+    overflow-x:hidden;
+    transition:0.3s;
+    padding-top:60px;
+}
+
+/* Sidebar Links */
+.sidebar a{
+    padding:10px 20px;
+    text-decoration:none;
+    font-size:18px;
+    color:white;
+    display:block;
+}
+
+.sidebar a:hover{
+    background:#0d6efd;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+    <span class="menu-btn" onclick="openMenu()">☰</span>
+    Admin Dashboard
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <a href="#" onclick="closeMenu()">❌ Close</a>
+    <a href="#">Dashboard</a>
+    <a href="#">User Management</a>
+    <a href="#">Fund Requests</a>
+    <a href="#">Transactions</a>
+    <a href="#">Reports</a>
+    <a href="#">Settings</a>
+</div>
+
+<script>
+function openMenu(){
+    document.getElementById("sidebar").style.width = "250px";
+}
+
+function closeMenu(){
+    document.getElementById("sidebar").style.width = "0";
+}
+</script>
+
+</body>
+</html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Spay360 Dashboard</title>
 
 <style>
@@ -112,8 +198,8 @@ font-weight:bold;
 padding:12px 25px;
 border:none;
 border-radius:12px;
-background:white;
-color:#16a34a;
+background:blue;
+color: white;
 font-weight:bold;
 cursor:pointer;
 transition:0.3s;
@@ -131,12 +217,12 @@ gap:18px;
 }
 
 .service-box{
-background:#ffffff;
+background: white;
 padding:25px 15px;
 border-radius:18px;
 text-align:center;
 text-decoration:none;
-color:#2563eb;
+color:blue;
 box-shadow:0 8px 20px rgba(0,0,0,0.4);
 transition:0.3s;
 }
@@ -190,6 +276,7 @@ background:#dc2626;
 <div class="wallet-section">
 <h3>Wallet Balance</h3>
 <h1>₹ <span id="walletAmount">0</span></h1>
+
 <a href="Addmoney.html">
 <button class="add-btn">Add Money</button>
 </a>
@@ -207,7 +294,7 @@ background:#dc2626;
 <p>FUND TRANSFER</p>
 </a>
 
-<a href="Myteam.html" class="service-box">
+<a href="myteam.html" class="service-box">
 <div class="icon">👥</div>
 <p>MY TEAM</p>
 </a>
