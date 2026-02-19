@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Transactions</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+background:#f3f4f7;
+}
+
+/* Header */
+.header{
+background:#1e73e8;
+color:white;
+padding:18px;
+display:flex;
+align-items:center;
+gap:15px;
+font-size:20px;
+font-weight:600;
+}
+
+.back-btn{
+width:35px;
+height:35px;
+border-radius:50%;
+border:1px solid rgba(255,255,255,0.6);
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+/* Tabs */
+.tabs{
+display:flex;
+background:#e5e5e5;
+margin:15px;
+border-radius:15px;
+overflow:hidden;
+}
+
+.tab{
+flex:1;
+text-align:center;
+padding:12px;
+font-weight:500;
+color:#444;
+cursor:pointer;
+}
+
+.tab.active{
+background:white;
+color:#1e73e8;
+}
+
+/* Filter */
+.filter{
+display:flex;
+margin:0 15px;
+background:#e5e5e5;
+border-radius:30px;
+padding:5px;
+}
+
+.filter-btn{
+flex:1;
+text-align:center;
+padding:10px;
+border-radius:25px;
+font-weight:500;
+color:#555;
+cursor:pointer;
+}
+
+.filter-btn.active{
+background:#1e73e8;
+color:white;
+}
+
+/* Content */
+.content{
+height:60vh;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+color:#b0b0b0;
+text-align:center;
+padding:20px;
+}
+
+.info{
+color:#1e3a8a;
+margin-bottom:20px;
+font-weight:500;
+}
+
+/* Navbar */
+.navbar{
+position:fixed;
+bottom:0;
+width:100%;
+background:#1e73e8;
+display:flex;
+justify-content:space-around;
+padding:12px 0;
+color:white;
+}
+
+.navbar div{
+text-align:center;
+font-size:13px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<div class="back-btn">←</div>
+<div>My Transactions</div>
+</div>
+
+<div class="tabs">
+<div class="tab active" onclick="showTab('transactions',this)">Transactions</div>
+<div class="tab" onclick="showTab('passbook',this)">Passbook</div>
+<div class="tab" onclick="showTab('refund',this)">Refund</div>
+</div>
+
+<!-- Passbook Filter -->
+<div id="filterSection" style="display:none;">
+<div class="filter">
+<div class="filter-btn active" onclick="setFilter(this)">All</div>
+<div class="filter-btn" onclick="setFilter(this)">Credit</div>
+<div class="filter-btn" onclick="setFilter(this)">Debit</div>
+</div>
+</div>
+
+<div class="content" id="contentArea">
+<div style="font-size:60px;opacity:0.4;">⇄</div>
+<div>No transactions found</div>
+</div>
+
+
+
+<script>
+
+function showTab(type,element){
+
+document.querySelectorAll('.tab').forEach(tab=>{
+tab.classList.remove('active');
+});
+element.classList.add('active');
+
+let content = document.getElementById("contentArea");
+let filter = document.getElementById("filterSection");
+
+if(type === "transactions"){
+filter.style.display="none";
+content.innerHTML = `
+<div style="font-size:60px;opacity:0.4;">⇄</div>
+<div>No transactions found</div>
+`;
+}
+
+if(type === "passbook"){
+filter.style.display="block";
+content.innerHTML = `
+<div style="font-size:60px;opacity:0.4;">💳</div>
+<div>No transactions found</div>
+`;
+}
+
+if(type === "refund"){
+filter.style.display="none";
+content.innerHTML = `
+<div class="info">ℹ Refund generally reflects in 3-5 working days</div>
+<div style="font-size:60px;opacity:0.4;">⇄</div>
+<div>No transactions found</div>
+`;
+}
+
+}
+
+function setFilter(btn){
+document.querySelectorAll('.filter-btn').forEach(b=>{
+b.classList.remove('active');
+});
+btn.classList.add('active');
+}
+
+</script>
+
+</body>
+</html>
