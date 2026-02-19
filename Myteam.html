@@ -1,109 +1,203 @@
 <!DOCTYPE html>
 <html>
-    <div class="header">
-    <button class="back-btn" onclick="window.location.href='Dashboard.html'">
-        ← Back
-    </button>
-        
 <head>
-    <title>Team Reports</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-<link rel="stylesheet" href="Myteam.css">
+<title>Team Dashboard</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family: 'Segoe UI', sans-serif;
+}
+
+body{
+background:#f4f7fb;
+}
+
+/* Header */
+.header{
+background:linear-gradient(135deg,#0f4c81,#1c6dd0);
+color:white;
+padding:20px;
+font-size:22px;
+font-weight:600;
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom-left-radius:25px;
+border-bottom-right-radius:25px;
+box-shadow:0 5px 20px rgba(0,0,0,0.15);
+}
+
+/* Top Summary Cards */
+.summary{
+display:flex;
+gap:15px;
+padding:20px;
+}
+
+.card{
+flex:1;
+background:white;
+padding:18px;
+border-radius:15px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+text-align:center;
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-3px);
+}
+
+.card h3{
+font-size:14px;
+color:#6b7280;
+margin-bottom:8px;
+}
+
+.card h2{
+font-size:22px;
+color:#111827;
+}
+
+/* Table Section */
+.table-container{
+margin:10px 15px 90px 15px;
+background:white;
+border-radius:18px;
+box-shadow:0 5px 20px rgba(0,0,0,0.08);
+padding:15px;
+}
+
+/* Table Header */
+.table-header{
+display:grid;
+grid-template-columns:1fr 1fr 1fr 1fr;
+padding:12px 8px;
+font-weight:600;
+color:#374151;
+border-bottom:1px solid #e5e7eb;
+}
+
+/* Table Rows */
+.row{
+display:grid;
+grid-template-columns:1fr 1fr 1fr 1fr;
+padding:12px 8px;
+align-items:center;
+border-bottom:1px solid #f1f5f9;
+transition:0.2s;
+}
+
+.row:hover{
+background:#f9fafb;
+}
+
+.level{
+font-weight:600;
+color:#111827;
+}
+
+.free{
+color:#dc2626;
+font-weight:600;
+}
+
+.paid{
+color:#d97706;
+font-weight:600;
+}
+
+.total{
+color:#059669;
+font-weight:600;
+}
+
+/* Bottom Navbar */
+.navbar{
+position:fixed;
+bottom:0;
+width:100%;
+background:white;
+display:flex;
+justify-content:space-around;
+padding:12px 0;
+box-shadow:0 -3px 15px rgba(0,0,0,0.08);
+border-top-left-radius:20px;
+border-top-right-radius:20px;
+}
+
+.navbar div{
+text-align:center;
+font-size:13px;
+color:#6b7280;
+}
+
+.navbar div.active{
+color:#1c6dd0;
+font-weight:600;
+}
+
+.icon{
+font-size:20px;
+display:block;
+margin-bottom:4px;
+}
+</style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="header">
+<span>👤 Team Overview</span>
+<span>🔗</span>
+</div>
 
-    <h2 class="title">Smartpay360</h2>
-    <h3 class="subtitle">Level Income</h3>
+<div class="summary">
+<div class="card">
+<h3>Total Income</h3>
+<h2>0</h2>
+</div>
 
-    <!-- Summary Boxes -->
-    <div class="summary-section">
-        <div class="summary-box">
-            <p>Total Team Joining</p>
-            <h2>5</h2>
-        </div>
+<div class="card">
+<h3>Total Active User</h3>
+<h2>0</h2>
+</div>
 
-        <div class="summary-box">
-            <p>Total Level Income</p>
-            <h2>₹155</h2>
-        </div>
-    </div>
+<div class="card">
+<h3>Total Inactive User</h3>
+<h2>0</h2>
+</div>
+</div>
 
-    <!-- Table Section -->
-    <div class="table-box">
-        <table>
-            <thead>
-                <tr>
-                    <th>Level</th>
-                    <th>User</th>
-                    <th>State</th>
-                    <th>Mobile</th>
-                    <th>Total Team</th>
-                    <th>Income</th>
-                </tr>
-            </thead>
+<div class="table-container">
 
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Rahul Sharma</td>
-                    <td>Delhi</td>
-                    <td>9876543210</td>
-                    <td>2</td>
-                    <td>₹50</td>
-                </tr>
+<div class="table-header">
+<div>Level</div>
+<div>Inactive</div>
+<div>Active </div>
+<div>Total income</div>
+</div>
 
-                <tr>
-                    <td>2</td>
-                    <td>Amit Kumar</td>
-                    <td>UP</td>
-                    <td>9123456789</td>
-                    <td>1</td>
-                    <td>₹40</td>
-                </tr>
-
-                <tr>
-                    <td>3</td>
-                    <td>Rohit Verma</td>
-                    <td>Bihar</td>
-                    <td>9988776655</td>
-                    <td>1</td>
-                    <td>₹30</td>
-                </tr>
-
-                <tr>
-                    <td>4</td>
-                    <td>Sanjay Singh</td>
-                    <td>Punjab</td>
-                    <td>9090909090</td>
-                    <td>1</td>
-                    <td>₹20</td>
-                </tr>
-
-                <tr>
-                    <td>5</td>
-                    <td>Vikas Patel</td>
-                    <td>Gujarat</td>
-                    <td>9898989898</td>
-                    <td>0</td>
-                    <td>₹15</td>
-                </tr>
-
-                <!-- Grand Total Row -->
-                <tr class="grand-total">
-                    <td colspan="4"><strong>Grand Total</strong></td>
-                    <td><strong>5</strong></td>
-                    <td><strong>₹155</strong></td>
-                </tr>
-
-            </tbody>
-        </table>
-    </div>
+<script>
+for(let i=1;i<=20;i++){
+document.write(`
+<div class="row">
+<div class="level">${i}</div>
+<div class="free">0</div>
+<div class="paid">0</div>
+<div class="total">0</div>
+</div>
+`);
+}
+</script>
 
 </div>
+
+
 
 </body>
 </html>
